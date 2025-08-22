@@ -12,7 +12,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ image, name, id }) => {
   return (
     <div className={styles.card}>
       <a href={`character/${id}`}>
-        <Image src={image} alt="" width={190} height={190} style={{height: '100%'}}/>
+        <Image priority src={image} alt="" width={190} height={190} style={{height: '100%'}}/>
       </a>
       <div>
         <p>{name}</p>

@@ -5,11 +5,12 @@ import styles from "../styles/Header.module.scss";
 import { useFavorites } from "@/context/FavoritesContext";
 
 const Header = () => {
-  const { favorites, toggleShowOnlyFavorites } = useFavorites();
+  const { favorites, SetShowOnlyFavorites, SetHideOnlyFavorties } =
+    useFavorites();
 
   return (
     <header className={styles.header}>
-      <Link href="/">
+      <Link href="/" onClick={SetHideOnlyFavorties}>
         <svg
           width="130"
           height="52"
@@ -37,7 +38,7 @@ const Header = () => {
         </svg>
       </Link>
 
-      <div onClick={toggleShowOnlyFavorites}>
+      <Link href="/" onClick={SetShowOnlyFavorites}>
         <svg
           width="24"
           height="22"
@@ -53,7 +54,7 @@ const Header = () => {
           />
         </svg>
         <p>{favorites.length}</p>
-      </div>
+      </Link>
     </header>
   );
 };
