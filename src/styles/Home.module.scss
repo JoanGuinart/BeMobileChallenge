@@ -1,0 +1,26 @@
+.main {
+}
+.loadingContainer {
+  width: 100%;
+  height: 5px;
+  background-color: var(--white);
+  overflow: hidden;
+}
+
+.loading {
+  height: 100%;
+  background-color: var(--marvel-red);
+  width: 0%;
+}
+
+.mainContent {
+  max-width: 1512px;
+  padding-inline: 48px;
+  margin-inline: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+}
