@@ -1,20 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
+import { NextResponse } from "next/server";
+import { fetchMarvelCharacters } from "@/lib/marvel";
 
-export async function GET(req: NextRequest) {
-  const ts = Date.now().toString();
-  const privateKey = process.env.MARVEL_PRIVATE_KEY!;
-  const publicKey = process.env.MARVEL_PUBLIC_KEY!;
-  const hash = crypto
-    .createHash("md5")
-    .update(ts + privateKey + publicKey)
-    .digest("hex");
-  const limit = req.nextUrl.searchParams.get("limit") || "15";
-
-  const url = `https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}`;
-
-  const response = await fetch(url);
-  const data = await response.json();
-
+export async function GET(req: Request) {
+  const limit = parseInt(
+    new URL(req.url).searchParams.get("limit") || "15",
+    10
+  );
+  const data = await fetchMarvelCharacters(limit);
   return NextResponse.json(data);
 }
