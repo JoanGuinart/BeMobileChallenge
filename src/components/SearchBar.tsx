@@ -1,11 +1,27 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import styles from "../styles/SearchBar.module.scss";
 
 interface SearchBarProps {
   numberOfResults: number;
+  onSearchChange: (value: string) => void;
+  initialSearch?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ numberOfResults }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  numberOfResults,
+  onSearchChange,
+  initialSearch = "",
+}) => {
+  const [search, setSearch] = useState(initialSearch);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    onSearchChange(value);
+  };
+
   return (
     <div className={styles.searchBar}>
       <div>
@@ -21,7 +37,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ numberOfResults }) => {
             fill="black"
           />
         </svg>
-        <input type="text" placeholder="SEARCH A CHARACTER..." />
+        <input
+          type="text"
+          placeholder="SEARCH A CHARACTER..."
+          value={search}
+          onChange={handleChange}
+        />
       </div>
       <p>{numberOfResults} RESULTS</p>
     </div>

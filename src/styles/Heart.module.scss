@@ -1,0 +1,14 @@
+.heart {
+  z-index: 2;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.heart path {
+  fill: transparent;
+  transition: fill 0.3s ease, stroke 0.3s ease, transform 0.3s ease;
+}
+
+.heart.liked path {
+  fill: var(--marvel-red);
+  stroke: var(--marvel-red);
+}

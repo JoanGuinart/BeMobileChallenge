@@ -5,13 +5,15 @@
   padding: 20px;
   background-color: var(--black);
   color: var(--white);
-  @media screen and (max-width: var(--tablet)) {
+}
+@media screen and (max-width: var(--tablet)) {
+  .header {
     padding: 16px 0;
   }
-  div {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
+}
+.header div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
 }

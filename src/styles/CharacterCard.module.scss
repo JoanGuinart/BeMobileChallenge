@@ -2,12 +2,35 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 190px;
-  img {
+  width: 100%;
+  &:hover {
+    div {
+      &:before {
+        height: 100%;
+      }
+      .heart {
+        fill: white;
+        stroke: white;
+      }
+    }
+  }
+  a {
+    margin: 0;
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
+    overflow: hidden;
+    &:hover {
+      img {
+        transform: scale(1.05);
+      }
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.4s ease;
+    }
   }
   div {
     display: flex;
@@ -17,8 +40,33 @@
     background-color: var(--black);
     color: var(--white);
     flex-grow: 1;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: var(--marvel-red);
+      z-index: 0;
+      transition: all 0.3s ease;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-right: 13px solid white;
+      border-top: 13px solid transparent;
+      z-index: 2;
+    }
     p {
       text-transform: uppercase;
+      z-index: 2;
+      font-size: 14px;
     }
   }
 }

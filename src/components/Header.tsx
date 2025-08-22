@@ -1,8 +1,12 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Header.module.scss";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const Header = () => {
+  const { favorites, toggleShowOnlyFavorites } = useFavorites();
+
   return (
     <header className={styles.header}>
       <Link href="/">
@@ -33,7 +37,7 @@ const Header = () => {
         </svg>
       </Link>
 
-      <div>
+      <div onClick={toggleShowOnlyFavorites}>
         <svg
           width="24"
           height="22"
@@ -48,7 +52,7 @@ const Header = () => {
             fill="#EC1D24"
           />
         </svg>
-        <p>3</p>
+        <p>{favorites.length}</p>
       </div>
     </header>
   );
