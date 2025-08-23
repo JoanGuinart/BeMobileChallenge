@@ -1,12 +1,13 @@
+@use './variables' as *;
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 16px;
   background-color: var(--black);
   color: var(--white);
-  @media screen and (max-width: var(--tablet)) {
-    padding: 16px 0;
+  @media screen and (min-width: $tablet) {
+    padding: 16px 48px;
   }
   a:nth-of-type(2) {
     display: flex;

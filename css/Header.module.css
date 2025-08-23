@@ -2,13 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 16px;
   background-color: var(--black);
   color: var(--white);
 }
-@media screen and (max-width: var(--tablet)) {
+@media screen and (min-width: 768px) {
   .header {
-    padding: 16px 0;
+    padding: 16px 48px;
   }
 }
 .header a:nth-of-type(2) {

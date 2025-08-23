@@ -4,12 +4,21 @@
   height: 100%;
   width: 100%;
 }
-.card:hover div:before {
+.card:active div:before {
   height: 100%;
 }
-.card:hover div .heart {
+.card:active div .heart {
   fill: white;
   stroke: white;
+}
+@media screen and (min-width: 768px) {
+  .card:hover div:before {
+    height: 100%;
+  }
+  .card:hover div .heart {
+    fill: white;
+    stroke: white;
+  }
 }
 .card a {
   margin: 0;

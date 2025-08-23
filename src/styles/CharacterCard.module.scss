@@ -1,9 +1,11 @@
+@use "./variables" as *;
+
 .card {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  &:hover {
+  &:active {
     div {
       &:before {
         height: 100%;
@@ -11,6 +13,19 @@
       .heart {
         fill: white;
         stroke: white;
+      }
+    }
+  }
+  @media screen and (min-width: $tablet) {
+    &:hover {
+      div {
+        &:before {
+          height: 100%;
+        }
+        .heart {
+          fill: white;
+          stroke: white;
+        }
       }
     }
   }
