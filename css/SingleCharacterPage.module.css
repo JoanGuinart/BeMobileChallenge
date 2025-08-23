@@ -1,0 +1,30 @@
+.singleCharacter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.singleCharacter img {
+  width: 100%;
+  height: auto;
+}
+.singleCharacter .characterInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--black);
+  color: var(--white);
+}
+.singleCharacter .characterInfo div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.singleCharacter .characterInfo div h1 {
+  text-transform: uppercase;
+  font-size: 32px;
+}
+.singleCharacter .characterInfo div .heart {
+  flex-shrink: 0;
+  stroke: RED;
+}
