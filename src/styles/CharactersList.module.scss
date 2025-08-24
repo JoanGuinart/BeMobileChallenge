@@ -1,3 +1,4 @@
+@use "./variables" as *;
 .loadingContainer {
   width: 100%;
   height: 5px;
@@ -12,6 +13,10 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (min-width: $mobile) {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
 }

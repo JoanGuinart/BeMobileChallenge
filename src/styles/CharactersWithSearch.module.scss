@@ -1,8 +1,12 @@
+@use "./variables" as *;
 .mainPage {
   max-width: var(--main-max-width);
-  padding-inline: 48px;
-  padding-bottom: 48px;
+  padding-inline: var(--padding-mobile);
+  padding-bottom: var(--padding-desktop);
   margin-inline: auto;
+  @media screen and (min-width: $tablet) {
+    padding-inline: var(--padding-desktop);
+  }
 }
 .favorites {
   text-transform: uppercase;
