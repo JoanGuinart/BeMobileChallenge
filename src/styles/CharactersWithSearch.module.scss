@@ -4,3 +4,28 @@
   margin-bottom: 36px;
   font-size: 32px;
 }
+.loading {
+  margin-inline: auto;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    border-top-color: currentColor;
+    box-sizing: border-box;
+    transform: translateY(-50%) rotate(0deg);
+    animation: loading-spin 0.8s linear infinite;
+  }
+}
+@keyframes loading-spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

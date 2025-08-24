@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchBar from "./SearchBar";
-import CharacterList from "./CharactersList";
+import CharactersList from "./CharactersList";
 import { useFavorites } from "@/context/FavoritesContext";
 import styles from "../styles/CharactersWithSearch.module.scss";
 
 type MarvelCharacter = {
   id: number;
   name: string;
-  thumbnail: { path: string; extension: string };
+  thumbnail?: { path?: string; extension?: string } | null;
 };
 
 interface CharactersWithSearchProps {
@@ -20,9 +20,28 @@ export default function CharactersWithSearch({
   initialCharacters,
 }: CharactersWithSearchProps) {
   const [search, setSearch] = useState("");
-  const [characters, setCharacters] = useState<MarvelCharacter[] | null>(null);
+  const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
   const { showOnlyFavorites, favorites } = useFavorites();
+
+  useEffect(() => {
+    if (showOnlyFavorites) {
+      setCharacters([]);
+      setLoadingFavorites(true);
+      setOffset(0);
+      setHasMore(false);
+    } else {
+      setCharacters([]);
+      setOffset(0);
+      setHasMore(true);
+      setIsSearching(false);
+    }
+  }, [showOnlyFavorites, initialCharacters]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,10 +61,20 @@ export default function CharactersWithSearch({
             `/api/marvel?ids=${encodeURIComponent(idsParam)}`,
             { signal: controller.signal }
           );
+          if (!res.ok) throw new Error(`API ${res.status}`);
           const data = await res.json();
-          setCharacters(data?.data?.results ?? []);
-        } catch (err) {
-          if (!(err instanceof Error && err.name === "AbortError")) {
+          let favChars: MarvelCharacter[] = data?.data?.results ?? [];
+
+          const trimmed = search.trim().toLowerCase();
+          if (trimmed !== "") {
+            favChars = favChars.filter((c: MarvelCharacter) =>
+              c.name.toLowerCase().includes(trimmed)
+            );
+          }
+
+          setCharacters(favChars);
+        } catch (err: unknown) {
+          if (err instanceof Error && err.name !== "AbortError") {
             console.error("Error fetching favorites", err);
           }
         } finally {
@@ -56,35 +85,128 @@ export default function CharactersWithSearch({
       return () => controller.abort();
     }
 
-    const handler = setTimeout(async () => {
+    const fetchCharacters = async (reset = false) => {
       const trimmed = search.trim();
-      if (trimmed === "") {
-        setCharacters(initialCharacters);
-        return;
-      }
-
+      setLoadingMore(true);
       try {
         const params = new URLSearchParams();
-        params.append("limit", "50");
-        params.append("search", trimmed);
+        if (offset === 0 && !isSearching) {
+          params.append("limit", "50");
+          params.append("offset", "0");
+        } else {
+          params.append("limit", "50");
+          params.append("offset", String(offset));
+        }
+        if (trimmed !== "") params.append("search", trimmed);
 
         const res = await fetch(`/api/marvel?${params.toString()}`, {
           signal: controller.signal,
         });
+        if (!res.ok) throw new Error(`API ${res.status}`);
         const data = await res.json();
-        setCharacters(data?.data?.results ?? []);
-      } catch (err) {
-        if (!(err instanceof Error && err.name === "AbortError")) {
+        const newChars = data?.data?.results ?? [];
+        if (reset) {
+          setCharacters(newChars);
+        } else {
+          setCharacters((prev) => {
+            const ids = new Set(prev.map((c) => c.id));
+            return [
+              ...prev,
+              ...newChars.filter((c: MarvelCharacter) => !ids.has(c.id)),
+            ];
+          });
+        }
+        if (newChars.length < (offset === 0 && !isSearching ? 50 : 15))
+          setHasMore(false);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== "AbortError") {
           console.error("Error fetching characters", err);
         }
+      } finally {
+        setLoadingMore(false);
       }
-    }, 300);
-
-    return () => {
-      clearTimeout(handler);
-      controller.abort();
     };
-  }, [search, showOnlyFavorites, favorites, initialCharacters]);
+
+    if (search.trim() === "" && offset === 0 && !isSearching) {
+      fetchCharacters(true);
+      return;
+    }
+
+    if (isSearching) {
+      const handler = setTimeout(async () => {
+        setLoadingMore(true);
+        try {
+          const params = new URLSearchParams();
+          params.append("limit", "50");
+          params.append("search", search.trim());
+          const res = await fetch(`/api/marvel?${params.toString()}`, {
+            signal: controller.signal,
+          });
+          if (!res.ok) throw new Error(`API ${res.status}`);
+          const data = await res.json();
+          setCharacters(data?.data?.results ?? []);
+          setHasMore(false);
+        } catch (err: unknown) {
+          if (err instanceof Error && err.name !== "AbortError") {
+            console.error("Error fetching characters", err);
+          }
+        } finally {
+          setLoadingMore(false);
+        }
+      }, 300);
+      return () => {
+        clearTimeout(handler);
+        controller.abort();
+      };
+    }
+
+    if (offset === 0) {
+      // Primer fetch sin búsqueda
+      fetchCharacters(true);
+      return () => controller.abort();
+    } else {
+      fetchCharacters();
+      return () => controller.abort();
+    }
+  }, [
+    search,
+    offset,
+    isSearching,
+    showOnlyFavorites,
+    favorites,
+    initialCharacters,
+  ]);
+
+  useEffect(() => {
+    setSearch("");
+    setOffset(0);
+    setHasMore(true);
+    setIsSearching(false);
+  }, [showOnlyFavorites]);
+
+  useEffect(() => {
+    if (search.trim() === "") {
+      setIsSearching(false);
+      setOffset(0);
+      setHasMore(true);
+    } else {
+      setIsSearching(true);
+      setHasMore(false);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (!hasMore || showOnlyFavorites || isSearching) return;
+    const loader = loaderRef.current;
+    if (!loader) return;
+    const observer = new window.IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !loadingMore) {
+        setOffset((prev) => prev + 15);
+      }
+    });
+    observer.observe(loader);
+    return () => observer.disconnect();
+  }, [hasMore, loadingMore, showOnlyFavorites, isSearching]);
 
   const displayedCharacters = characters ?? [];
 
@@ -92,15 +214,27 @@ export default function CharactersWithSearch({
     <div>
       {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
       <SearchBar
+        value={search}
         numberOfResults={displayedCharacters.length}
         onSearchChange={setSearch}
       />
       {showOnlyFavorites && loadingFavorites ? (
-        <p>Loading favorites...</p>
-      ) : characters === null ? (
-        <p>Loading...</p>
+        <p className={styles.loading}>Loading favorites...</p>
+      ) : characters.length === 0 ? (
+        <p className={styles.loading}>Loading...</p>
       ) : (
-        <CharacterList characters={displayedCharacters} />
+        <>
+          <CharactersList characters={displayedCharacters} search={search} />
+          {!showOnlyFavorites && hasMore && !isSearching && (
+            <div
+              ref={loaderRef}
+              style={{ height: 40, textAlign: "center" }}
+              className={styles.loading}
+            >
+              {loadingMore ? "Cargando más..." : ""}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

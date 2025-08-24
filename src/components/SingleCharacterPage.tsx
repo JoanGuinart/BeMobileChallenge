@@ -19,8 +19,6 @@ export default function SingleCharacterPage({
 }) {
   const src = `${character.thumbnailPath}.${character.thumbnailExt}`;
 
-  console.log(character);
-
   return (
     <main>
       <section className={styles.singleCharacter}>

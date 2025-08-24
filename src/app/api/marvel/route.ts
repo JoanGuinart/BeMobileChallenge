@@ -9,6 +9,7 @@ export async function GET(req: Request) {
   const idsParam = url.searchParams.get("ids");
   const limit = parseInt(url.searchParams.get("limit") || "50", 10);
   const search = url.searchParams.get("search") || undefined;
+  const offset = parseInt(url.searchParams.get("offset") || "0", 10);
 
   try {
     if (idsParam) {
@@ -20,7 +21,7 @@ export async function GET(req: Request) {
       const characters = await fetchMarvelCharactersByIds(ids);
       return NextResponse.json({ data: { results: characters } });
     }
-    const data = await fetchMarvelCharacters(limit, search);
+    const data = await fetchMarvelCharacters(limit, search, offset);
     return NextResponse.json(data);
   } catch (err) {
     console.error("API error", err);

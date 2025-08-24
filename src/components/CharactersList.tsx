@@ -1,11 +1,10 @@
 import CharacterCard from "./CharacterCard";
 import styles from "../styles/CharactersList.module.scss";
-import { useFavorites } from "@/context/FavoritesContext";
 
 type MarvelCharacter = {
   id: number;
   name: string;
-  thumbnail: { path: string; extension: string };
+  thumbnail?: { path?: string; extension?: string } | null;
 };
 
 interface Props {
@@ -14,26 +13,29 @@ interface Props {
 }
 
 export default function CharacterList({ characters, search = "" }: Props) {
-  const { favorites, showOnlyFavorites } = useFavorites();
-
-  const filtered = characters.filter((c) => {
-    const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase());
-    const matchesFavorites = showOnlyFavorites
-      ? favorites.includes(c.id)
-      : true;
-    return matchesSearch && matchesFavorites;
-  });
+  const filtered = characters.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div className={styles.grid}>
-      {filtered.map((char) => (
-        <CharacterCard
-          key={char.id}
-          id={char.id}
-          name={char.name}
-          image={`${char.thumbnail.path}/standard_fantastic.${char.thumbnail.extension}`}
-        />
-      ))}
+    <div className={styles.grid} role="list">
+      {filtered.map((char) => {
+        const thumb = char.thumbnail?.path
+          ? `${String(char.thumbnail.path).replace(
+              /^http:/,
+              "https:"
+            )}/standard_fantastic.${char.thumbnail?.extension ?? "jpg"}`
+          : "/images/placeholder-character.png";
+
+        return (
+          <CharacterCard
+            key={char.id}
+            id={char.id}
+            name={char.name}
+            image={thumb}
+          />
+        );
+      })}
     </div>
   );
 }

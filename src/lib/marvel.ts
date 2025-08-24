@@ -14,11 +14,12 @@ export function getAuthParams() {
 
 export async function fetchMarvelCharacters(
   limit: number = 50,
-  search?: string
+  search?: string,
+  offset: number = 0
 ) {
   const { ts, apikey, hash } = getAuthParams();
 
-  let url = `https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${apikey}&hash=${hash}&limit=${limit}`;
+  let url = `https://gateway.marvel.com/v1/public/characters?ts=${ts}&apikey=${apikey}&hash=${hash}&limit=${limit}&offset=${offset}`;
 
   if (search) {
     url += `&nameStartsWith=${encodeURIComponent(search)}`;
