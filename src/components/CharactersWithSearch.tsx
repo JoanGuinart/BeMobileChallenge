@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import CharactersList from "./CharactersList";
 import { useFavorites } from "@/context/FavoritesContext";
 import styles from "../styles/CharactersWithSearch.module.scss";
+import LoadingBar from "./LoadingBar";
 
 type MarvelCharacter = {
   id: number;
@@ -28,6 +29,7 @@ export default function CharactersWithSearch({
   const [isSearching, setIsSearching] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const { showOnlyFavorites, favorites } = useFavorites();
+  const isLoading = loadingFavorites || loadingMore;
 
   useEffect(() => {
     if (showOnlyFavorites) {
@@ -211,31 +213,34 @@ export default function CharactersWithSearch({
   const displayedCharacters = characters ?? [];
 
   return (
-    <div>
-      {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
-      <SearchBar
-        value={search}
-        numberOfResults={displayedCharacters.length}
-        onSearchChange={setSearch}
-      />
-      {showOnlyFavorites && loadingFavorites ? (
-        <p className={styles.loading}>Loading favorites...</p>
-      ) : characters.length === 0 ? (
-        <p className={styles.loading}>Loading...</p>
-      ) : (
-        <>
-          <CharactersList characters={displayedCharacters} search={search} />
-          {!showOnlyFavorites && hasMore && !isSearching && (
-            <div
-              ref={loaderRef}
-              style={{ height: 40, textAlign: "center" }}
-              className={styles.loading}
-            >
-              {loadingMore ? "Cargando más..." : ""}
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    <>
+      <LoadingBar loading={isLoading} />
+      <div className={styles.mainPage}>
+        {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
+        <SearchBar
+          value={search}
+          numberOfResults={displayedCharacters.length}
+          onSearchChange={setSearch}
+        />
+        {showOnlyFavorites && loadingFavorites ? (
+          <p className={styles.loading}>Loading favorites...</p>
+        ) : characters.length === 0 ? (
+          <p className={styles.loading}>Loading...</p>
+        ) : (
+          <>
+            <CharactersList characters={displayedCharacters} search={search} />
+            {!showOnlyFavorites && hasMore && !isSearching && (
+              <div
+                ref={loaderRef}
+                style={{ height: 40, textAlign: "center" }}
+                className={styles.loading}
+              >
+                {loadingMore ? "Cargando más..." : ""}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }

@@ -1,3 +1,9 @@
+.mainPage {
+  max-width: var(--main-max-width);
+  padding-inline: 48px;
+  padding-bottom: 48px;
+  margin-inline: auto;
+}
 .favorites {
   text-transform: uppercase;
   font-weight: 700;

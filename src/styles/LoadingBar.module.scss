@@ -1,0 +1,19 @@
+.loadingBar {
+  height: 4px;
+  background-color: #ff0000;
+  width: 0%;
+  transition: width 2s ease-out, opacity 0.3s ease-out, height 0.3s ease-out;
+  z-index: 9999;
+}
+.isLoading {
+  animation: grow 1s ease-out;
+}
+
+@keyframes grow {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

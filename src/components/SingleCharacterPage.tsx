@@ -1,8 +1,10 @@
-import React from "react";
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import styles from "@/styles/SingleCharacterPage.module.scss";
 import Heart from "./Heart";
 import ComicsSection from "./ComicsSection";
+import LoadingBar from "./LoadingBar";
 
 type CharacterProps = {
   id: number;
@@ -19,8 +21,12 @@ export default function SingleCharacterPage({
 }) {
   const src = `${character.thumbnailPath}.${character.thumbnailExt}`;
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
   return (
     <main>
+      <LoadingBar loading={isLoading} />
       <section className={styles.singleCharacter}>
         <div>
           <Image
@@ -29,6 +35,7 @@ export default function SingleCharacterPage({
             width={300}
             height={300}
             priority
+            onLoad={() => setIsLoading(false)}
           />
           <div className={styles.characterInfo}>
             <div>
