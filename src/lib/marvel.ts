@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-function getAuthParams() {
+export function getAuthParams() {
   const ts = Date.now().toString();
   const privateKey = process.env.MARVEL_PRIVATE_KEY!;
   const publicKey = process.env.MARVEL_PUBLIC_KEY!;

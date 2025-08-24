@@ -2,6 +2,16 @@
   --black: #000000;
   --white: #ffffff;
   --marvel-red: #ec1d24;
+  --gray: #D9D9D9;
+  --dark-gray: #333333;
+
+  /* MAX WIDTHS */
+  --single-max-width: 960px;
+  --main-max-width: 1512px;
+
+  /* PADDINGS-INLINE MAX WIDTHS */
+  --padding-mobile: 16px;
+  --padding-desktop: 48px;
 
   /* MEDIAQUERIES */
   --tablet: 768px;

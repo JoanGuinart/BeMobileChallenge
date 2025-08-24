@@ -6,7 +6,7 @@ import { FavoritesProvider } from "@/context/FavoritesContext";
 
 const geistRoboto = Roboto_Condensed({
   variable: "--font-roboto",
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
 

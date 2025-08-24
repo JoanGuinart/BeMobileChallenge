@@ -1,33 +1,99 @@
+@use "./variables" as *;
 .singleCharacter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  img {
-    width: 100%;
-    height: auto;
-  }
-  .characterInfo {
+  background-color: var(--black);
+  position: relative;
+  > div {
+    max-width: var(--single-max-width);
+    margin-inline: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--black);
-    color: var(--white);
-    div {
+    justify-content: center;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .characterInfo {
+      width: 100%;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 24px;
       align-items: center;
-      h1 {
-        text-transform: uppercase;
-        font-size: 32px;
+      color: var(--white);
+      padding: 24px 16px 48px 16px;
+      position: relative;
+
+      div {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+        h1 {
+          text-transform: uppercase;
+          font-size: 32px;
+          font-weight: 700;
+        }
+        .heart {
+          flex-shrink: 0;
+          stroke: var(--marvel-red);
+          fill: var(--marvel-red);
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 0;
+          height: 0;
+          border-right: 24px solid white;
+          border-top: 24px solid transparent;
+          z-index: 2;
+        }
+        @media screen and (min-width: $tablet) {
+          &::after {
+            display: none;
+          }
+        }
       }
-      .heart {
-        flex-shrink: 0;
-        stroke: RED;
+      p {
+        text-align: start;
+        width: 100%;
+        font-size: 16px;
+        text-wrap: balance;
+      }
+    }
+    @media screen and (min-width: $tablet) {
+      flex-direction: row;
+      img {
+        max-height: 320px;
+        aspect-ratio: 1 / 1;
+        width: auto;
+      }
+      .characterInfo {
+        align-self: stretch;
+        justify-content: center;
+        padding: 16px 48px;
+        h1 {
+          font-size: 40px;
+        }
+        p {
+        }
       }
     }
   }
-}
-
-.comicsSection {
+  @media screen and (min-width: $tablet) {
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-right: 24px solid white;
+      border-top: 24px solid transparent;
+      z-index: 2;
+    }
+  }
 }

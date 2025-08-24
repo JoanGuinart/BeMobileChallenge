@@ -1,38 +1,29 @@
-import Heart from "@/components/Heart";
-import styles from "../../../styles/SingleCharacterPage.module.scss";
+import SingleCharacterPage from "../../../components/SingleCharacterPage";
 import { fetchMarvelCharacterById } from "@/lib/marvel";
-import Image from "next/image";
+import { notFound } from "next/navigation";
 
-interface CharacterPageProps {
-  params: { id: string };
-}
+type ParamsType = { id: string } | Promise<{ id: string }>;
 
-export default async function CharacterPage({ params }: CharacterPageProps) {
-  const { id } = params; 
+export default async function Page({ params }: { params: ParamsType }) {
+  const { id } = await params;
   const data = await fetchMarvelCharacterById(id);
-  const character = data.data.results[0];
+  const character = data?.data?.results?.[0];
+
+  if (!character) {
+    return notFound();
+  }
+
+  const characterProps = {
+    id: character.id,
+    name: character.name,
+    description: character.description ?? "Description not available",
+    thumbnailPath: character.thumbnail.path,
+    thumbnailExt: character.thumbnail.extension,
+  };
 
   return (
     <main>
-      <section className={styles.singleCharacter}>
-        <Image
-          src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
-          alt={character.name}
-          width={300}
-          height={300}
-          priority
-        />
-        <div className={styles.characterInfo}>
-          <div>
-            <h1>{character.name}</h1>
-            <Heart id={character.id} heartClass={styles.heart} width={24} height={22}/>
-          </div>
-          <p>{character.description || "No description available."}</p>
-        </div>
-      </section>
-      <section className={styles.comicsSection}>
-        COMICS
-      </section>
+      <SingleCharacterPage character={characterProps} />
     </main>
   );
 }

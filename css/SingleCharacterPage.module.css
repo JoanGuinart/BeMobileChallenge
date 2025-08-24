@@ -1,30 +1,97 @@
 .singleCharacter {
+  background-color: var(--black);
+  position: relative;
+}
+.singleCharacter > div {
+  max-width: var(--single-max-width);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.singleCharacter img {
+.singleCharacter > div img {
   width: 100%;
   height: auto;
 }
-.singleCharacter .characterInfo {
+.singleCharacter > div .characterInfo {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 24px;
   align-items: center;
-  background-color: var(--black);
   color: var(--white);
+  padding: 24px 16px 48px 16px;
+  position: relative;
 }
-.singleCharacter .characterInfo div {
+.singleCharacter > div .characterInfo div {
+  width: 100%;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  gap: 8px;
   align-items: center;
 }
-.singleCharacter .characterInfo div h1 {
+.singleCharacter > div .characterInfo div h1 {
   text-transform: uppercase;
   font-size: 32px;
+  font-weight: 700;
 }
-.singleCharacter .characterInfo div .heart {
+.singleCharacter > div .characterInfo div .heart {
   flex-shrink: 0;
-  stroke: RED;
+  stroke: var(--marvel-red);
+  fill: var(--marvel-red);
+}
+.singleCharacter > div .characterInfo div::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-right: 24px solid white;
+  border-top: 24px solid transparent;
+  z-index: 2;
+}
+@media screen and (min-width: 768px) {
+  .singleCharacter > div .characterInfo div::after {
+    display: none;
+  }
+}
+.singleCharacter > div .characterInfo p {
+  text-align: start;
+  width: 100%;
+  font-size: 16px;
+  text-wrap: balance;
+}
+@media screen and (min-width: 768px) {
+  .singleCharacter > div {
+    flex-direction: row;
+  }
+  .singleCharacter > div img {
+    max-height: 320px;
+    aspect-ratio: 1/1;
+    width: auto;
+  }
+  .singleCharacter > div .characterInfo {
+    align-self: stretch;
+    justify-content: center;
+    padding: 16px 48px;
+  }
+  .singleCharacter > div .characterInfo h1 {
+    font-size: 40px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .singleCharacter::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-right: 24px solid white;
+    border-top: 24px solid transparent;
+    z-index: 2;
+  }
 }

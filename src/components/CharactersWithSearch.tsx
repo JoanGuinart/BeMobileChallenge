@@ -20,8 +20,7 @@ export default function CharactersWithSearch({
   initialCharacters,
 }: CharactersWithSearchProps) {
   const [search, setSearch] = useState("");
-  const [characters, setCharacters] =
-    useState<MarvelCharacter[]>(initialCharacters);
+  const [characters, setCharacters] = useState<MarvelCharacter[] | null>(null);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
   const { showOnlyFavorites, favorites } = useFavorites();
 
@@ -41,9 +40,7 @@ export default function CharactersWithSearch({
           const idsParam = favorites.join(",");
           const res = await fetch(
             `/api/marvel?ids=${encodeURIComponent(idsParam)}`,
-            {
-              signal: controller.signal,
-            }
+            { signal: controller.signal }
           );
           const data = await res.json();
           setCharacters(data?.data?.results ?? []);
@@ -89,7 +86,7 @@ export default function CharactersWithSearch({
     };
   }, [search, showOnlyFavorites, favorites, initialCharacters]);
 
-  const displayedCharacters = characters;
+  const displayedCharacters = characters ?? [];
 
   return (
     <div>
@@ -100,6 +97,8 @@ export default function CharactersWithSearch({
       />
       {showOnlyFavorites && loadingFavorites ? (
         <p>Loading favorites...</p>
+      ) : characters === null ? (
+        <p>Loading...</p>
       ) : (
         <CharacterList characters={displayedCharacters} />
       )}
