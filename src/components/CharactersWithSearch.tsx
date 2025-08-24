@@ -46,46 +46,50 @@ export default function CharactersWithSearch({
   }, [showOnlyFavorites, initialCharacters]);
 
   useEffect(() => {
+    if (!showOnlyFavorites) return;
+
     const controller = new AbortController();
+    setLoadingFavorites(true);
 
-    if (showOnlyFavorites) {
-      setLoadingFavorites(true);
-      if (!favorites || favorites.length === 0) {
-        setCharacters([]);
-        setLoadingFavorites(false);
-        return () => controller.abort();
-      }
-
-      (async () => {
-        try {
-          const idsParam = favorites.join(",");
-          const res = await fetch(
-            `/api/marvel?ids=${encodeURIComponent(idsParam)}`,
-            { signal: controller.signal }
-          );
-          if (!res.ok) throw new Error(`API ${res.status}`);
-          const data = await res.json();
-          let favChars: MarvelCharacter[] = data?.data?.results ?? [];
-
-          const trimmed = search.trim().toLowerCase();
-          if (trimmed !== "") {
-            favChars = favChars.filter((c: MarvelCharacter) =>
-              c.name.toLowerCase().includes(trimmed)
-            );
-          }
-
-          setCharacters(favChars);
-        } catch (err: unknown) {
-          if (err instanceof Error && err.name !== "AbortError") {
-            console.error("Error fetching favorites", err);
-          }
-        } finally {
-          setLoadingFavorites(false);
-        }
-      })();
-
+    if (!favorites || favorites.length === 0) {
+      setCharacters([]);
+      setLoadingFavorites(false);
       return () => controller.abort();
     }
+
+    (async () => {
+      try {
+        const idsParam = favorites.join(",");
+        const res = await fetch(
+          `/api/marvel?ids=${encodeURIComponent(idsParam)}`,
+          { signal: controller.signal }
+        );
+        if (!res.ok) throw new Error(`API ${res.status}`);
+        const data = await res.json();
+        let favChars: MarvelCharacter[] = data?.data?.results ?? [];
+        const trimmed = search.trim().toLowerCase();
+        if (trimmed !== "") {
+          favChars = favChars.filter((c: MarvelCharacter) =>
+            c.name.toLowerCase().includes(trimmed)
+          );
+        }
+        setCharacters(favChars);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== "AbortError") {
+          console.error("Error fetching favorites", err);
+        }
+      } finally {
+        setLoadingFavorites(false);
+      }
+    })();
+
+    return () => controller.abort();
+  }, [favorites, showOnlyFavorites, search]);
+
+  useEffect(() => {
+    if (showOnlyFavorites) return;
+
+    const controller = new AbortController();
 
     const fetchCharacters = async (reset = false) => {
       const trimmed = search.trim();
@@ -100,7 +104,6 @@ export default function CharactersWithSearch({
           params.append("offset", String(offset));
         }
         if (trimmed !== "") params.append("search", trimmed);
-
         const res = await fetch(`/api/marvel?${params.toString()}`, {
           signal: controller.signal,
         });
@@ -163,21 +166,13 @@ export default function CharactersWithSearch({
     }
 
     if (offset === 0) {
-      // Primer fetch sin búsqueda
       fetchCharacters(true);
       return () => controller.abort();
     } else {
       fetchCharacters();
       return () => controller.abort();
     }
-  }, [
-    search,
-    offset,
-    isSearching,
-    showOnlyFavorites,
-    favorites,
-    initialCharacters,
-  ]);
+  }, [search, offset, isSearching, showOnlyFavorites]);
 
   useEffect(() => {
     setSearch("");
@@ -215,32 +210,37 @@ export default function CharactersWithSearch({
   return (
     <>
       <LoadingBar loading={isLoading} />
-      <div className={styles.mainPage}>
-        {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
-        <SearchBar
-          value={search}
-          numberOfResults={displayedCharacters.length}
-          onSearchChange={setSearch}
-        />
-        {showOnlyFavorites && loadingFavorites ? (
-          <p className={styles.loading}>Loading favorites...</p>
-        ) : characters.length === 0 ? (
-          <p className={styles.loading}>Loading...</p>
-        ) : (
-          <>
-            <CharactersList characters={displayedCharacters} search={search} />
-            {!showOnlyFavorites && hasMore && !isSearching && (
-              <div
-                ref={loaderRef}
-                style={{ height: 40, textAlign: "center" }}
-                className={styles.loading}
-              >
-                {loadingMore ? "Cargando más..." : ""}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {characters.length !== 0 && (
+        <div className={styles.mainPage}>
+          {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
+          <SearchBar
+            value={search}
+            numberOfResults={displayedCharacters.length}
+            onSearchChange={setSearch}
+          />
+          {showOnlyFavorites && loadingFavorites ? (
+            <p className={styles.loading}>Loading favorites...</p>
+          ) : characters.length === 0 ? (
+            <p className={styles.loading}>Loading...</p>
+          ) : (
+            <>
+              <CharactersList
+                characters={displayedCharacters}
+                search={search}
+              />
+              {!showOnlyFavorites && hasMore && !isSearching && (
+                <div
+                  ref={loaderRef}
+                  style={{ height: 40, textAlign: "center" }}
+                  className={styles.loading}
+                >
+                  {loadingMore ? "Loading more..." : ""}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }
