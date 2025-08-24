@@ -4,7 +4,7 @@ import React from "react";
 import styles from "../styles/Header.module.scss";
 import { useFavorites } from "@/context/FavoritesContext";
 
-const Header = ({ loading = false, progress = 0 }) => {
+const Header = () => {
   const { favorites, SetShowOnlyFavorites, SetHideOnlyFavorties } = useFavorites();
 
   return (

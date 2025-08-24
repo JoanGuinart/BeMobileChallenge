@@ -21,7 +21,10 @@ export default function CharactersWithSearch({
   initialCharacters,
 }: CharactersWithSearchProps) {
   const [search, setSearch] = useState("");
-  const [characters, setCharacters] = useState<MarvelCharacter[]>([]);
+  // Inicializamos con initialCharacters para evitar el "pantallazo en blanco"
+  const [characters, setCharacters] = useState<MarvelCharacter[]>(
+    initialCharacters ?? []
+  );
   const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -32,18 +35,23 @@ export default function CharactersWithSearch({
   const isLoading = loadingFavorites || loadingMore;
 
   useEffect(() => {
-    if (showOnlyFavorites) {
-      setCharacters([]);
-      setLoadingFavorites(true);
-      setOffset(0);
-      setHasMore(false);
-    } else {
-      setCharacters([]);
+    if (
+      !showOnlyFavorites &&
+      initialCharacters &&
+      initialCharacters.length > 0
+    ) {
+      setCharacters(initialCharacters);
       setOffset(0);
       setHasMore(true);
-      setIsSearching(false);
     }
-  }, [showOnlyFavorites, initialCharacters]);
+  }, [initialCharacters, showOnlyFavorites]);
+
+  useEffect(() => {
+    setSearch("");
+    setOffset(0);
+    setHasMore(showOnlyFavorites ? false : true);
+    setIsSearching(false);
+  }, [showOnlyFavorites]);
 
   useEffect(() => {
     if (!showOnlyFavorites) return;
@@ -133,8 +141,13 @@ export default function CharactersWithSearch({
     };
 
     if (search.trim() === "" && offset === 0 && !isSearching) {
-      fetchCharacters(true);
-      return;
+      if (initialCharacters && initialCharacters.length > 0) {
+        setCharacters(initialCharacters);
+        setHasMore(true);
+      } else {
+        fetchCharacters(true);
+      }
+      return () => controller.abort();
     }
 
     if (isSearching) {
@@ -172,14 +185,7 @@ export default function CharactersWithSearch({
       fetchCharacters();
       return () => controller.abort();
     }
-  }, [search, offset, isSearching, showOnlyFavorites]);
-
-  useEffect(() => {
-    setSearch("");
-    setOffset(0);
-    setHasMore(true);
-    setIsSearching(false);
-  }, [showOnlyFavorites]);
+  }, [search, offset, isSearching, showOnlyFavorites, initialCharacters]);
 
   useEffect(() => {
     if (search.trim() === "") {
@@ -210,37 +216,36 @@ export default function CharactersWithSearch({
   return (
     <>
       <LoadingBar loading={isLoading} />
-      {characters.length !== 0 && (
-        <div className={styles.mainPage}>
-          {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
-          <SearchBar
-            value={search}
-            numberOfResults={displayedCharacters.length}
-            onSearchChange={setSearch}
-          />
-          {showOnlyFavorites && loadingFavorites ? (
-            <p className={styles.loading}>Loading favorites...</p>
-          ) : characters.length === 0 ? (
-            <p className={styles.loading}>Loading...</p>
-          ) : (
-            <>
-              <CharactersList
-                characters={displayedCharacters}
-                search={search}
-              />
-              {!showOnlyFavorites && hasMore && !isSearching && (
-                <div
-                  ref={loaderRef}
-                  style={{ height: 40, textAlign: "center" }}
-                  className={styles.loading}
-                >
-                  {loadingMore ? "Loading more..." : ""}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      )}
+      <div className={styles.mainPage}>
+        {showOnlyFavorites && <h2 className={styles.favorites}>Favorites</h2>}
+        <SearchBar
+          value={search}
+          numberOfResults={displayedCharacters.length}
+          onSearchChange={setSearch}
+        />
+        {showOnlyFavorites && loadingFavorites ? (
+          <p className={styles.loading}>Loading favorites...</p>
+        ) : displayedCharacters.length === 0 ? (
+          <p className={styles.loading}>Loading...</p>
+        ) : (
+          <>
+            <CharactersList
+              key={showOnlyFavorites ? "favorites" : "all"}
+              characters={displayedCharacters}
+              search={search}
+            />
+            {!showOnlyFavorites && hasMore && !isSearching && (
+              <div
+                ref={loaderRef}
+                style={{ height: 40, textAlign: "center" }}
+                className={styles.loading}
+              >
+                {loadingMore ? "Loading more..." : ""}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 }
