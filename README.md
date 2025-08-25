@@ -127,12 +127,9 @@ npx playwright test --headed
 # Generate test report
 npx playwright show-report
 
-
-
 ---
 
-
-
+```
 ## 🇪🇸 Español
 
 ### Descripción
