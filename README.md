@@ -109,7 +109,29 @@ This app automatically serves assets differently depending on the mode:
 
 No extra configuration is needed; Next.js handles this by default.
 
+### Running Tests with Playwright
+This project uses **Playwright** for end-to-end testing. To run the tests:
+
+```bash
+# Install Playwright (if not installed)
+npx playwright install
+
+# Run all tests
+npm run test
+# or
+npx playwright test
+
+# Run tests in headed mode (with browser visible)
+npx playwright test --headed
+
+# Generate test report
+npx playwright show-report
+
+
+
 ---
+
+
 
 ## 🇪🇸 Español
 
@@ -212,3 +234,17 @@ La aplicación sirve los archivos de forma diferente según el entorno:
 - **Modo producción** (`npm run build` + `npm start`): los assets se sirven concatenados y minimizados para un mejor rendimiento y carga más rápida.
 
 No se necesita configuración adicional; Next.js lo gestiona automáticamente.
+
+# Instala Playwright (si no está instalado)
+npx playwright install
+
+# Ejecuta todos los tests
+npm run test
+# o
+npx playwright test
+
+# Ejecuta los tests en modo visible (con navegador)
+npx playwright test --headed
+
+# Genera un reporte de tests
+npx playwright show-report
