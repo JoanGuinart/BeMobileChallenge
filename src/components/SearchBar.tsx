@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className={styles.searchBar}>
+    <div data-testid="search-input" className={styles.searchBar}>
       <div>
         <svg
           width="13"
@@ -32,9 +32,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           />
         </svg>
         <input
+          data-testid="search-input"
           type="text"
           placeholder="SEARCH A CHARACTER..."
-          value={value} // <-- controlado por el padre
+          value={value}
           onChange={handleChange}
         />
       </div>

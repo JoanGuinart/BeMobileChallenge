@@ -1,0 +1,23 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("Main view - Character search", () => {
+  test("Filters characters correctly by name", async ({ page }) => {
+    await page.goto("/");
+
+    const searchInput = page.locator('input[data-testid="search-input"]');
+    await expect(searchInput).toBeVisible();
+    await expect(searchInput).toBeEnabled();
+    await searchInput.fill("Spider");
+
+    const cards = page.locator('[data-testid="full-card"]');
+    await cards.first().waitFor({ state: "visible", timeout: 5000 });
+
+    const titles = cards.locator('[data-testid="card-title"]');
+    const titlesCount = await titles.count();
+    expect(titlesCount).toBeGreaterThan(0);
+
+    for (let i = 0; i < titlesCount; i++) {
+      await expect(titles.nth(i)).toContainText(/Spider/i);
+    }
+  });
+});

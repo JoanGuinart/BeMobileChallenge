@@ -15,7 +15,7 @@ interface FavoriteContextType {
   toggleFavorite: (id: number) => void;
   showOnlyFavorites: boolean;
   SetShowOnlyFavorites: () => void;
-  SetHideOnlyFavorties: () => void;
+  SetHideOnlyFavorites: () => void;
 }
 
 const FavoritesContext = createContext<FavoriteContextType | undefined>(
@@ -27,7 +27,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
   const SetShowOnlyFavorites = () => setShowOnlyFavorites(true);
-  const SetHideOnlyFavorties = () => setShowOnlyFavorites(false);
+  const SetHideOnlyFavorites = () => setShowOnlyFavorites(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("favorites");
@@ -57,7 +57,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
         toggleFavorite,
         showOnlyFavorites,
         SetShowOnlyFavorites,
-        SetHideOnlyFavorties,
+        SetHideOnlyFavorites,
       }}
     >
       {children}

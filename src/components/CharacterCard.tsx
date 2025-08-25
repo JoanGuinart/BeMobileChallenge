@@ -10,12 +10,19 @@ interface CharacterCardProps {
 
 const CharacterCard: React.FC<CharacterCardProps> = ({ image, name, id }) => {
   return (
-    <div className={styles.card}>
-      <a href={`character/${id}`}>
-        <Image priority src={image} alt="" width={190} height={190} style={{height: '100%'}}/>
+    <div data-testid="full-card" className={styles.card}>
+      <a data-testid="card" href={`character/${id}`}>
+        <Image
+          priority
+          src={image}
+          alt=""
+          width={190}
+          height={190}
+          style={{ height: "100%" }}
+        />
       </a>
       <div>
-        <p>{name}</p>
+        <p data-testid="card-title">{name}</p>
         <Heart id={id} heartClass={styles.heart} />
       </div>
     </div>

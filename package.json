@@ -16,9 +16,11 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.55.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "typescript": "^5"
