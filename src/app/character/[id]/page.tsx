@@ -1,5 +1,5 @@
-import SingleCharacterPage from "../../../components/SingleCharacterPage";
-import { fetchMarvelCharacterById } from "@/lib/marvel";
+import SingleCharacterPage from "@components/SingleCharacterPage";
+import { fetchMarvelCharacterById } from "@lib/marvel";
 import { notFound } from "next/navigation";
 
 type ParamsType = { id: string } | Promise<{ id: string }>;

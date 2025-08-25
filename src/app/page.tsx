@@ -1,5 +1,5 @@
-import { fetchMarvelCharacters } from "@/lib/marvel";
-import CharactersWithSearch from "@/components/CharactersWithSearch";
+import { fetchMarvelCharacters } from "@lib/marvel";
+import CharactersWithSearch from "@components/CharactersWithSearch";
 
 export default async function Home() {
   const data = await fetchMarvelCharacters(50);

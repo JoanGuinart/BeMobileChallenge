@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import styles from "../styles/Header.module.scss";
-import { useFavorites } from "@/context/FavoritesContext";
+import styles from "@styles/Header.module.scss";
+import { useFavorites } from "@context/FavoritesContext";
 
 const Header = () => {
   const { favorites, SetShowOnlyFavorites, SetHideOnlyFavorties } = useFavorites();

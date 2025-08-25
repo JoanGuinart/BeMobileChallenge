@@ -1,5 +1,5 @@
-import CharacterCard from "./CharacterCard";
-import styles from "../styles/CharactersList.module.scss";
+import CharacterCard from "@components/CharacterCard";
+import styles from "@styles/CharactersList.module.scss";
 
 type MarvelCharacter = {
   id: number;

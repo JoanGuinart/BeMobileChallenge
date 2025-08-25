@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthParams } from "@/lib/marvel";
+import { getAuthParams } from "@lib/marvel";
 
 interface MarvelComic {
   id: number;

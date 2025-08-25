@@ -1,6 +1,6 @@
 import Image from "next/image";
-import styles from "../styles/CharacterCard.module.scss";
-import Heart from "./Heart";
+import styles from "@styles/CharacterCard.module.scss";
+import Heart from "@components/Heart";
 
 interface CharacterCardProps {
   image: string;

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import styles from "../styles/Heart.module.scss";
-import { useFavorites } from "../context/FavoritesContext";
+import styles from "@styles/Heart.module.scss";
+import { useFavorites } from "@context/FavoritesContext";
 
 interface HeartProps {
   id: number;
@@ -17,6 +17,7 @@ const Heart: React.FC<HeartProps> = ({ id, heartClass, isBig = false }) => {
     <>
       {isBig ? (
         <svg
+          data-testid="big-heart"
           className={`${styles.heart} ${liked ? styles.liked : ""}`}
           width="24"
           height="22"
@@ -37,6 +38,7 @@ const Heart: React.FC<HeartProps> = ({ id, heartClass, isBig = false }) => {
         </svg>
       ) : (
         <svg
+          data-testid="small-heart"
           className={`${styles.heart} ${liked ? styles.liked : ""}`}
           width="15"
           height="14"

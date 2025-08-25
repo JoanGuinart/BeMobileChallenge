@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import { FavoritesProvider } from "@/context/FavoritesContext";
+import Header from "@components/Header";
+import { FavoritesProvider } from "@context/FavoritesContext";
 
 const geistRoboto = Roboto_Condensed({
   variable: "--font-roboto",

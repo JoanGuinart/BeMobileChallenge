@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import SearchBar from "./SearchBar";
-import CharactersList from "./CharactersList";
-import { useFavorites } from "@/context/FavoritesContext";
-import styles from "../styles/CharactersWithSearch.module.scss";
-import LoadingBar from "./LoadingBar";
+import SearchBar from "@components/SearchBar";
+import CharactersList from "@components/CharactersList";
+import { useFavorites } from "@context/FavoritesContext";
+import styles from "@styles/CharactersWithSearch.module.scss";
+import LoadingBar from "@components/LoadingBar";
 
 type MarvelCharacter = {
   id: number;

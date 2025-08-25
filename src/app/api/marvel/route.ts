@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   fetchMarvelCharacters,
   fetchMarvelCharactersByIds,
-} from "@/lib/marvel";
+} from "@lib/marvel";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

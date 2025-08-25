@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import styles from "../styles/ComicsSection.module.scss";
-import Comic from "./Comic";
+import styles from "@styles/ComicsSection.module.scss";
+import Comic from "@components/Comic";
 
 interface Comic {
   id: number;

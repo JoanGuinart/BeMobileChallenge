@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import styles from "@/styles/SingleCharacterPage.module.scss";
-import Heart from "./Heart";
-import ComicsSection from "./ComicsSection";
-import LoadingBar from "./LoadingBar";
+import styles from "@styles/SingleCharacterPage.module.scss";
+import Heart from "@components/Heart";
+import ComicsSection from "@components/ComicsSection";
+import LoadingBar from "@components/LoadingBar";
 
 type CharacterProps = {
   id: number;

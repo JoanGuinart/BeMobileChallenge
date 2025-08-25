@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/SearchBar.module.scss";
+import styles from "@styles/SearchBar.module.scss";
 
 interface SearchBarProps {
   value: string;
