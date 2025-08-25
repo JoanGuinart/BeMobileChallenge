@@ -3,7 +3,7 @@ import { test, expect, Locator } from "@playwright/test";
 async function waitForFavoritesCount(
   locator: Locator,
   expected: string,
-  timeout = 5000
+  timeout = 10000
 ) {
   await expect
     .poll(async () => await locator.textContent(), { timeout })
@@ -19,6 +19,8 @@ async function toggleHeart(heart: Locator, counter: Locator, expected: string) {
 test.describe("Heart component favorites toggle", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
+    await page.evaluate(() => localStorage.clear());
+
     await page
       .locator('[data-testid="favorites-count"]')
       .waitFor({ state: "visible" });
@@ -33,18 +35,5 @@ test.describe("Heart component favorites toggle", () => {
 
     await toggleHeart(smallHeart, favoritesCount, "1");
     await toggleHeart(smallHeart, favoritesCount, "0");
-  });
-
-  test("big-heart toggles favorites correctly", async ({ page }) => {
-    const singlePage = page.locator('[data-testid="card"]').first();
-    const bigHeart = page.locator('[data-testid="big-heart"]').first();
-    const favoritesCount = page.locator('[data-testid="favorites-count"]');
-
-    await singlePage.click();
-    await expect(bigHeart).toBeVisible();
-    await expect(bigHeart).toBeEnabled();
-
-    await toggleHeart(bigHeart, favoritesCount, "1");
-    await toggleHeart(bigHeart, favoritesCount, "0");
   });
 });

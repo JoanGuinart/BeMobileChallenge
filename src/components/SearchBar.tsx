@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div data-testid="search-input" className={styles.searchBar}>
+    <div className={styles.searchBar}>
       <div>
         <svg
           width="13"

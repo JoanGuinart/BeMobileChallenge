@@ -1,22 +1,33 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Favorites filter", () => {
-  test("Shows only the clicked favorite character", async ({ page }) => {
-    await page.goto("/");
+test("Shows only the clicked favorite character", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => localStorage.clear());
 
-    const firstCard = page.locator('[data-testid="card"]').first();
-    const firstTitle = await firstCard.locator('[data-testid="card-title"]').textContent();
+  const firstCard = page.locator('[data-testid="card"]').first();
+  await expect(firstCard).toBeVisible();
 
- 
-    await firstCard.click();
+  const firstTitleLocator = page.locator('[data-testid="card-title"]').first();
+  await expect(firstTitleLocator).toBeVisible();
 
-    const showFavoritesButton = page.locator('[data-testid="show-favorites-button"]');
-    await showFavoritesButton.click();
+  const firstTitle = await firstTitleLocator.textContent();
+  if (!firstTitle) throw new Error("First card has no title");
 
-    const cards = page.locator('[data-testid="card"]');
-    await expect(cards).toHaveCount(1, { timeout: 5000 });
+  const likeButton = page.locator('[data-testid="small-heart"]').first();
+  await likeButton.click();
 
-    const favoriteTitle = cards.locator('[data-testid="card-title"]').first();
-    await expect(favoriteTitle).toHaveText(firstTitle || "");
-  });
+  const showFavoritesButton = page
+    .locator('[data-testid="show-favorites-button"]')
+    .first();
+  await showFavoritesButton.click();
+
+  const favoriteCard = page.locator('[data-testid="card"]').first();
+  await favoriteCard.waitFor({ state: "visible", timeout: 10000 });
+
+  const favoriteTitleLocator = page
+    .locator('[data-testid="card-title"]')
+    .first();
+  await expect(favoriteTitleLocator).toHaveText(firstTitle);
+
+  await expect(page.locator('[data-testid="card"]')).toHaveCount(1);
 });

@@ -1,9 +1,12 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Main view - Character search", () => {
-  test("Filters characters correctly by name", async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto("/");
+    await page.evaluate(() => localStorage.clear());
+  });
 
+  test("Filters characters correctly by name", async ({ page }) => {
     const searchInput = page.locator('input[data-testid="search-input"]');
     await expect(searchInput).toBeVisible();
     await expect(searchInput).toBeEnabled();

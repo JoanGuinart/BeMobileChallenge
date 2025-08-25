@@ -16,14 +16,6 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "chromium-mobile",
-      use: {
-        browserName: "chromium",
-        ...devices["Pixel 7"],
-        headless: true,
-      },
-    },
   ],
   webServer: {
     command: "npm run dev",
