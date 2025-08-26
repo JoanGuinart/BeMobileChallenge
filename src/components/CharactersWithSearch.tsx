@@ -226,11 +226,7 @@ export default function CharactersWithSearch({
         {showOnlyFavorites && loadingFavorites ? (
           <p className={styles.loading}>Loading favorites...</p>
         ) : showOnlyFavorites && displayedCharacters.length === 0 ? (
-          <p>
-            You have not selected any favorite characters yet.
-          </p>
-        ) : displayedCharacters.length === 0 ? (
-          <p className={styles.loading}>Loading...</p>
+          <p>0 Characters found</p>
         ) : (
           <>
             <CharactersList
