@@ -5,24 +5,18 @@ import styles from "@styles/SingleCharacterPage.module.scss";
 import Heart from "@components/Heart";
 import ComicsSection from "@components/ComicsSection";
 import LoadingBar from "@components/LoadingBar";
+import type { Character } from "@types";
 
-type CharacterProps = {
-  id: number;
-  name: string;
-  description: string;
-  thumbnailPath: string;
-  thumbnailExt: string;
-};
+interface SingleCharacterPageProps {
+  character: Character;
+}
 
 export default function SingleCharacterPage({
   character,
-}: {
-  character: CharacterProps;
-}) {
+}: SingleCharacterPageProps) {
   const src = `${character.thumbnailPath}.${character.thumbnailExt}`;
 
   const [isLoading, setIsLoading] = useState(true);
-
 
   return (
     <main>

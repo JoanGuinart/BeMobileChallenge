@@ -24,7 +24,8 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@context/*": ["context/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@types": ["types"],
     }
   },
   "include": [

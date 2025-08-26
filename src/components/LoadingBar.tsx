@@ -1,9 +1,6 @@
 import React from "react";
 import styles from "@styles/LoadingBar.module.scss";
-
-interface LoadingBarProps {
-  loading: boolean;
-}
+import type { LoadingBarProps } from "@types";
 
 const LoadingBar: React.FC<LoadingBarProps> = ({ loading }) => {
   return (

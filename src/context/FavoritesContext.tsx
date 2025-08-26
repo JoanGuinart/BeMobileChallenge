@@ -16,6 +16,8 @@ interface FavoriteContextType {
   showOnlyFavorites: boolean;
   SetShowOnlyFavorites: () => void;
   SetHideOnlyFavorites: () => void;
+  loadingFavoritesContext: boolean;
+  setLoadingFavoritesContext: (value: boolean) => void;
 }
 
 const FavoritesContext = createContext<FavoriteContextType | undefined>(
@@ -25,6 +27,7 @@ const FavoritesContext = createContext<FavoriteContextType | undefined>(
 export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [loadingFavoritesContext, setLoadingFavoritesContext] = useState(false);
 
   const SetShowOnlyFavorites = () => setShowOnlyFavorites(true);
   const SetHideOnlyFavorites = () => setShowOnlyFavorites(false);
@@ -39,10 +42,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   }, [favorites]);
 
   const addFavorite = (id: number) => setFavorites((prev) => [...prev, id]);
-
   const removeFavorite = (id: number) =>
     setFavorites((prev) => prev.filter((favId) => favId !== id));
-
   const toggleFavorite = (id: number) =>
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
@@ -58,6 +59,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
         showOnlyFavorites,
         SetShowOnlyFavorites,
         SetHideOnlyFavorites,
+        loadingFavoritesContext,
+        setLoadingFavoritesContext,
       }}
     >
       {children}

@@ -1,12 +1,7 @@
 import Image from "next/image";
 import styles from "@styles/CharacterCard.module.scss";
 import Heart from "@components/Heart";
-
-interface CharacterCardProps {
-  image: string;
-  name: string;
-  id: number;
-}
+import type { CharacterCardProps } from "@types";
 
 const CharacterCard: React.FC<CharacterCardProps> = ({ image, name, id }) => {
   return (
@@ -15,7 +10,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ image, name, id }) => {
         <Image
           priority
           src={image}
-          alt=""
+          alt={name}
           width={190}
           height={190}
           style={{ height: "100%" }}

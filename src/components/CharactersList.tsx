@@ -1,18 +1,11 @@
 import CharacterCard from "@components/CharacterCard";
 import styles from "@styles/CharactersList.module.scss";
+import type { CharactersListProps } from "@types";
 
-type MarvelCharacter = {
-  id: number;
-  name: string;
-  thumbnail?: { path?: string; extension?: string } | null;
-};
-
-interface Props {
-  characters: MarvelCharacter[];
-  search?: string;
-}
-
-export default function CharacterList({ characters, search = "" }: Props) {
+export default function CharacterList({
+  characters,
+  search = "",
+}: CharactersListProps) {
   const filtered = characters.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
   );

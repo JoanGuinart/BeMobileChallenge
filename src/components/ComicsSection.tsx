@@ -2,20 +2,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "@styles/ComicsSection.module.scss";
 import Comic from "@components/Comic";
-
-interface Comic {
-  id: number;
-  title: string;
-  thumbnail: { path: string; extension: string };
-  startYear?: number;
-}
-
-interface ComicsSectionProps {
-  characterId: number;
-}
+import type { ComicsSectionProps, Comic as ComicType } from "@types";
 
 const ComicsSection: React.FC<ComicsSectionProps> = ({ characterId }) => {
-  const [comics, setComics] = useState<Comic[]>([]);
+  const [comics, setComics] = useState<ComicType[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollPercent, setScrollPercent] = useState(0);
@@ -66,7 +56,7 @@ const ComicsSection: React.FC<ComicsSectionProps> = ({ characterId }) => {
       if (!isDragging.current || !scrollRef.current) return;
       e.preventDefault();
       const x = e.pageX - scrollRef.current.offsetLeft;
-      const walk = (x - startX.current) * .5;
+      const walk = (x - startX.current) * 0.5;
       scrollRef.current.scrollLeft = scrollLeft.current - walk;
       handleScroll();
       velocity.current = e.pageX - lastX.current;

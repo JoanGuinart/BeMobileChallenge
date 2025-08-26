@@ -2,12 +2,7 @@
 import React from "react";
 import styles from "@styles/Heart.module.scss";
 import { useFavorites } from "@context/FavoritesContext";
-
-interface HeartProps {
-  id: number;
-  heartClass?: string;
-  isBig?: boolean;
-}
+import type { HeartProps } from "@types";
 
 const Heart: React.FC<HeartProps> = ({ id, heartClass, isBig = false }) => {
   const { favorites, toggleFavorite } = useFavorites();

@@ -3,14 +3,37 @@ import Link from "next/link";
 import React from "react";
 import styles from "@styles/Header.module.scss";
 import { useFavorites } from "@context/FavoritesContext";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
-  const { favorites, SetShowOnlyFavorites, SetHideOnlyFavorites } = useFavorites();
+  const {
+    favorites,
+    showOnlyFavorites,
+    SetShowOnlyFavorites,
+    SetHideOnlyFavorites,
+    setLoadingFavoritesContext,
+  } = useFavorites();
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleShowFavorites = () => {
+    if (!showOnlyFavorites) {
+      setLoadingFavoritesContext(true);
+      SetShowOnlyFavorites();
+    }
+    if (pathname !== "/") router.push("/");
+  };
+
+  const handleHideFavorites = () => {
+    SetHideOnlyFavorites();
+    if (pathname !== "/") router.push("/");
+  };
 
   return (
     <>
       <header className={styles.header}>
-        <Link href="/" onClick={SetHideOnlyFavorites}>
+        <Link href="/" onClick={handleHideFavorites}>
           <svg
             width="130"
             height="52"
@@ -38,7 +61,11 @@ const Header = () => {
           </svg>
         </Link>
 
-        <Link data-testid="show-favorites-button" href="/" onClick={SetShowOnlyFavorites}>
+        <Link
+          data-testid="show-favorites-button"
+          href="/"
+          onClick={handleShowFavorites}
+        >
           <svg
             width="24"
             height="22"

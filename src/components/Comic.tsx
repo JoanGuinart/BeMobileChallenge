@@ -2,15 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import styles from "@styles/Comic.module.scss";
-
-interface ComicProps {
-  comic: {
-    id: number;
-    title: string;
-    thumbnail: { path: string; extension: string };
-    startYear?: number;
-  };
-}
+import type { ComicProps } from "@types";
 
 const Comic: React.FC<ComicProps> = ({ comic }) => {
   const src = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
