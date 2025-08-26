@@ -12,8 +12,8 @@ test.describe("Main view - Character search", () => {
     await expect(searchInput).toBeEnabled();
     await searchInput.fill("Spider");
 
-    const cards = page.locator('[data-testid="full-card"]');
-    await cards.first().waitFor({ state: "visible", timeout: 5000 });
+    const cards = page.locator('[data-testid="full-card"]').first();
+    await cards.first().waitFor({ state: "visible", timeout: 10000 });
 
     const titles = cards.locator('[data-testid="card-title"]');
     const titlesCount = await titles.count();

@@ -28,10 +28,9 @@ export default function CharactersWithSearch({
 
   const isLoading = showOnlyFavorites ? loadingFavoritesContext : loadingMore;
 
-  // Inicializa characters según showOnlyFavorites
   useEffect(() => {
     if (showOnlyFavorites) {
-      setCharacters([]); // limpio para que solo se vean favoritos
+      setCharacters([]);
       setHasMore(false);
     } else if (initialCharacters?.length) {
       setCharacters(initialCharacters);
@@ -94,7 +93,7 @@ export default function CharactersWithSearch({
     return () => controller.abort();
   }, [favorites, showOnlyFavorites, search, setLoadingFavoritesContext]);
 
-  // Fetch de todos los personajes (no favoritos)
+  // Fetch de todos los personajes
   useEffect(() => {
     if (showOnlyFavorites) return;
 
@@ -183,7 +182,7 @@ export default function CharactersWithSearch({
         {showOnlyFavorites ? (
           loadingFavoritesContext ? (
             <p className={styles.loading}>Loading favorites...</p>
-          ) : characters.length === 0 && !loadingFavoritesContext ? (
+          ) : characters.length === 0 && search.length !== 0 ? (
             <p>0 Characters found</p>
           ) : (
             <CharactersList
