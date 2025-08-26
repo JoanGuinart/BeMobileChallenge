@@ -117,8 +117,7 @@ This project uses **Playwright** for end-to-end testing. To run the tests:
 npx playwright install
 
 # Run all tests
-npm run test
-# or
+
 npx playwright test
 
 # Run tests in headed mode (with browser visible)
@@ -236,8 +235,7 @@ No se necesita configuración adicional; Next.js lo gestiona automáticamente.
 npx playwright install
 
 # Ejecuta todos los tests
-npm run test
-# o
+
 npx playwright test
 
 # Ejecuta los tests en modo visible (con navegador)
