@@ -39,16 +39,6 @@ export default function CharactersWithSearch({
     }
   }, [showOnlyFavorites, initialCharacters]);
 
-  useEffect(() => {
-    if (showOnlyFavorites) {
-      setHasMore(false);
-    } else if (initialCharacters?.length) {
-      setCharacters(initialCharacters);
-      setOffset(0);
-      setHasMore(true);
-    }
-  }, [showOnlyFavorites, initialCharacters]);
-
   // Fetch de favoritos
   useEffect(() => {
     if (!showOnlyFavorites) return;
@@ -165,8 +155,6 @@ export default function CharactersWithSearch({
     observer.observe(loader);
     return () => observer.disconnect();
   }, [hasMore, loadingMore, showOnlyFavorites, isSearching]);
-
-  console.log(loadingFavoritesContext, " aqui ");
 
   return (
     <>
